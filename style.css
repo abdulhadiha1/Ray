@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #9b6ca7;
+    background-color: #7b4688;
   }
   
   .container {
@@ -47,5 +47,9 @@
     height: 300px; /* الطول المطلوب */
     object-fit: cover; /* يقص الصورة بحيث تناسب الأبعاد بدون تشويه */
     border-radius: 10px; /* تعطي حواف ناعمة للصورة، خيار إضافي */
+  }
+  .movable {
+    position: absolute;
+    transition: 0.3s ease-in-out;
   }
   
