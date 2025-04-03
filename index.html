@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthdayy Rayyy<3</title>
+  <title>happy birthdayy rayyyy</title>
   <link rel="stylesheet" href="./style.css" />
   <style>
     .btn {
@@ -51,7 +50,8 @@
         yesText: "ريريررييرري", 
         noText: "رنيم", 
         incorrectText: "!!وششش ذا الطفش بهبدك صصحصح",  
-        incorrectImage: "images/photo_2025-04-02_21-52-12.jpg"
+        incorrectImage: "images/photo_2025-04-02_21-52-12.jpg",
+        correctAnswer: true  // true means "yes" is correct
       },
       {
         text: "يسسسسس بهاذي المناسبة خلنا نلعب لعبة", 
@@ -59,15 +59,17 @@
         yesText: "تمامم؟", 
         noText: "انا بخرب واختار لا", 
         incorrectText: "",  
-        incorrectImage: "images/photo_2025-04-02_20-56-39.jpg"
+        incorrectImage: "images/photo_2025-04-02_20-56-39.jpg",
+        correctAnswer: true  // true means "yes" is correct
       },
       {
-        text: " كم فلم تابعنااا؟", 
+        text: "كم فلم تابعنااا؟", 
         image: "images/photo_2025-04-02_20-56-15.jpg", 
         yesText: "64", 
         noText: "62", 
         incorrectText: "غطيت عيوني عشان الاجابة غلط",  
-        incorrectImage: "images/photo_2025-04-02_20-56-18.jpg"
+        incorrectImage: "images/photo_2025-04-02_20-56-18.jpg",
+        correctAnswer: true  // true means "yes" is correct
       },
       {
         text: "تذكر الساندويتش حقك من وين استلهمته", 
@@ -78,26 +80,34 @@
         incorrectImage: "images/photo_2025-04-02_20-56-26.jpg"
       },
       {
-        text: " اول مرة حطينا صورة كوبل كانت وش؟", 
+        text: "اول مرة حطينا صورة كوبل كانت وش؟", 
         image: "images/photo_2025-04-02_20-56-33.jpg", 
         noText: "Even if this love Disappears from the world tonight", 
         yesText: "King of the land",
-        incorrectText: "كانت الصورة قريبه من ذي",  
+        incorrectText: "كانت الصورة قريبه من ذي اشتقتتت",  
         incorrectImage: "images/photo_2025-04-02_20-56-34.jpg"
       },
       {
         text: "اول خطة رحلة سويناها كانت اول مدينة هي؟", 
-        image: "images/photo_2025-04-02_20-56-23.jpg", 
-        noText: "دبي", 
-        yesText: "العلا",
+        image: "images/photo_2025-04-02_20-56-23.jpg",
+        yesText: "دبي", 
+        noText: "العلا", 
         incorrectText: "حاول تتذكر كانت بسيارتي ههههه",  
         incorrectImage: "images/photo_2025-04-02_20-56-21.jpg"
       },
       {
+        text: "افضل شيء ممكن يصير بيومي", 
+        image: "images/photo_2025-04-03_05-14-14.jpg", 
+        yesText: "أسولف معككك", 
+        noText: "اكل بدون لا أطرش", 
+        incorrectText: "هههههه خيرر شفيك تعالجت منزمان",  
+        incorrectImage: "images/photo_2025-04-03_05-14-11.jpg"
+      },
+      {
         text: "مين افضل واحد يحتفل بميلادك", 
         image: "images/photo_2025-04-02_20-56-31.jpg", 
-        yesText: "دودي", 
-        noText: "دودي2", 
+        yesText: "2دودي", 
+        noText: "دودي", 
         incorrectText: "مافيييييييي الاااا دودويييي واحدددد",  
         incorrectImage: "images/photo_2025-04-02_20-56-30.jpg"
       },
@@ -110,10 +120,14 @@
         incorrectImage: "images/photo_2025-04-02_20-56-36.jpg"
       }
     ];
+      // Add more questions as needed
     
     let currentQuestion = 0;
     
-    function checkAnswer(isCorrect) {
+    function checkAnswer(isYesSelected) {
+      const current = questions[currentQuestion];
+      const isCorrect = (isYesSelected && current.correctAnswer) || (!isYesSelected && !current.correctAnswer);
+
       if (isCorrect) {
         currentQuestion++;
         if (currentQuestion < questions.length) {
@@ -125,16 +139,17 @@
         }
       } else {
         // Display the specific incorrect image and text for the current question
-        document.getElementById("question-text").innerText = questions[currentQuestion].incorrectText;  // Display custom incorrect text
-        document.getElementById("question-image").src = questions[currentQuestion].incorrectImage;  // Display custom sad image
+        document.getElementById("question-text").innerText = current.incorrectText;  // Display custom incorrect text
+        document.getElementById("question-image").src = current.incorrectImage;  // Display custom sad image
       }
     }
     
     function updateQuestion() {
-      document.getElementById("question-text").innerText = questions[currentQuestion].text;  // Update text
-      document.getElementById("question-image").src = questions[currentQuestion].image;  // Update image
-      document.getElementById("yes-btn").innerText = questions[currentQuestion].yesText;  // Update "Yes" button
-      document.getElementById("no-btn").innerText = questions[currentQuestion].noText;  // Update "No" button
+      const current = questions[currentQuestion];
+      document.getElementById("question-text").innerText = current.text;  // Update text
+      document.getElementById("question-image").src = current.image;  // Update image
+      document.getElementById("yes-btn").innerText = current.yesText;  // Update "Yes" button
+      document.getElementById("no-btn").innerText = current.noText;  // Update "No" button
 
       // Shuffle the buttons (yes-btn and no-btn) randomly
       shuffleButtons();
@@ -143,16 +158,18 @@
     function shuffleButtons() {
       const btns = document.querySelectorAll(".btn button");
       const randomIndex = Math.random() < 0.5 ? 0 : 1;
+
+      // Swap the button texts
       const tempText = btns[0].innerText;
       btns[0].innerText = btns[1].innerText;
       btns[1].innerText = tempText;
 
-      const tempIsCorrect = btns[0].onclick;
+      // Swap the button functions (onClick) as well
+      const tempOnClick = btns[0].onclick;
       btns[0].onclick = btns[1].onclick;
-      btns[1].onclick = tempIsCorrect;
+      btns[1].onclick = tempOnClick;
     }
 
   </script>
 </body>
-
 </html>
